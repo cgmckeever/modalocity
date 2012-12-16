@@ -114,8 +114,7 @@ MDLY.overlay = (function(){
       overlay.log(eType+' dismiss: ' + current.opts.target);
       jQuery('#overlay__modal').hide();
       jQuery('#overlay__backdrop').hide();
-      jQuery('body').append(jQuery(current.opts.target));
-      jQuery(current.opts.target).hide();
+      jQuery('#'+overlay.opts.binding+'__parent').append(jQuery(current.opts.target));
       if(typeof current.opts.closeCallback == 'function') current.opts.closeCallback(current.opts);
       jQuery(window).unbind('resize.modal');
       current = false;

@@ -3,12 +3,7 @@
     <title>Modalicty</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="modalocity.js"></script>
-  </head>
-  
-  <body>
-  
-    <a href="#" class="modal-simple__trigger">Click Trigger</a>
-  
+    
     <script>
       jQuery(function(){
         // initialize 
@@ -26,7 +21,7 @@
         MDLY.overlay.init(settings);
         
         var overlay = {
-                        'binding':'modal-simple'
+                        'binding':'modal-simple-h'
                       /** turn off backdrop listener (per modal) **/
                         //, backdropClose: false
                       /** turn off esc listener  (per modal) **/
@@ -38,6 +33,21 @@
         // overlay.openCallback = funcOpen;
         // overlay.closeCallback = funcClose; 
         MDLY.overlay.addTrigger(overlay);
+        
+        
+        var overlay = {
+                        'binding':'modal-simple-b'
+                      /** turn off backdrop listener (per modal) **/
+                        , backdropClose: false
+                      /** turn off esc listener  (per modal) **/
+                       //, escClose: false,
+                     /** turns of X close **/
+                       //, hideClose: true,
+                      };
+        /** open/close callbacks **/
+        overlay.openCallback = funcOpen;
+        MDLY.overlay.addTrigger(overlay);
+        
       });
       
       // these are callbacks that can happen when the modal is launched
@@ -46,15 +56,29 @@
         }
       funcClose = function(){
           alert('close');
-        }  
-      
+        }    
     </script>
     
+  </head>
+  
+  <body>
     
-    
-    <div style="display:none" id="modal-simple__content">
-      HELLO
+    <a href="#" class="modal-simple-h__trigger">Click Trigger Hello</a>
+        
+    <div id="modal-simple-h__parent">
+      <div id="modal-simple-h__content">
+        HELLO
+      </div>  
     </div>  
+    
+    <hr />
+    <a href="#" class="modal-simple-b__trigger">Click Trigger Goodbye</a>
+    
+    <div id="modal-simple-b__parent" style="display:none">
+      <div id="modal-simple-b__content">
+        Goodbye
+      </div>  
+    </div>
   
   </body>
 </html>
