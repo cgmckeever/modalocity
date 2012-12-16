@@ -69,6 +69,7 @@ MDLY.overlay = (function(){
         });
         if(!openInt && settings.openNow && !current)
         {
+          overlay.log('auto-open: ' + settings.binding);
           openInt = setInterval(function(){
               if(cssLoaded)
               {
