@@ -3,7 +3,7 @@ MDLY.css = 'modalocity.css';
 MDLY.overlay = (function(){
     var overlay = {};
     overlay.logging = false;
-    overlay.cssLoaded = false;
+    var cssLoaded = false;
     var current = false;
     var init = false;
     
@@ -12,7 +12,7 @@ MDLY.overlay = (function(){
     var modal = '<div id="overlay__modal"><a id="overlay__close-link" class="overlay__close" href="#">close</a><div id="overlay__content"></div></div>';
     
     overlay.cssInit = function(){
-        overlay.cssLoaded = true;
+        cssLoaded = true;
       }
     
     overlay.init = function(settings){ 
@@ -27,7 +27,7 @@ MDLY.overlay = (function(){
         var css = (typeof settings.css != 'undefined') ? settings.css : MDLY.css;
         var cssObj = jQuery('<link>', {rel:'stylesheet', type:'text/css', href:css, onLoad:overlay.cssInit()});
         cssObj.appendTo('head');  
-      }else overlay.cssLoaded = true;
+      }else cssLoaded = true;
       
       jQuery('body').on('click','.overlay__close',function(e){
           overlay.close('click');
@@ -69,7 +69,7 @@ MDLY.overlay = (function(){
         if(settings.openNow && !current)
         {
           var I = setInterval(function(){
-              if(overlay.cssLoaded)
+              if(cssLoaded)
               {
                 clearInterval(I);
                 overlay.open(settings);    
