@@ -6,6 +6,7 @@ MDLY.overlay = (function(){
     var cssLoaded = false;
     var current = false;
     var init = false;
+    var openInt = false;
     
     // elements
     var backdrop = '<div id="overlay__backdrop" class="overlay__backdrop"></div>';
@@ -66,12 +67,12 @@ MDLY.overlay = (function(){
           overlay.open(settings);
           return false;
         });
-        if(settings.openNow && !current)
+        if(!openInt && settings.openNow && !current)
         {
-          var I = setInterval(function(){
+          openInt = setInterval(function(){
               if(cssLoaded)
               {
-                clearInterval(I);
+                clearInterval(openInt);
                 overlay.open(settings);    
               }
             },300);          
