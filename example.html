@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>Modalicty</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="modalocity.js"></script>
+  </head>
+  
+  <body>
+  
+    <h1 class="modal-simple__trigger">HI</h1>
+  
+    <script>
+      jQuery(function(){
+        // initialize 
+        MDLY.overlay.init(true);
+        
+        var overlay = {binding:'modal-simple'};
+        overlay.openCallback = funcOpen;
+        overlay.closeCallback = funcClose; 
+        MDLY.overlay.addTrigger(overlay);
+      });
+      
+      // these are callbacks that can happen when the modal is launched
+      funcOpen = function(){
+          alert('open');
+        }
+      funcClose = function(){
+          alert('close');
+        }  
+      
+    </script>
+    
+    
+    
+    <div style="display:none" id="modal-simple__content">
+      HELLO
+    </div>  
+  
+  </body>
+</html>
