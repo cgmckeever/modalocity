@@ -2,29 +2,33 @@ MDLY = {};
 MDLY.css = 'modalocity.css';
 MDLY.overlay = (function(){
     var overlay = {};
+    overlay.logging = false;
+    overlay.cssLoaded = false;
     var current = false;
-    var firstLoad = false;
-    var logActive = false;
     var init = false;
     
     // elements
     var backdrop = '<div id="overlay__backdrop" class="overlay__backdrop"></div>';
     var modal = '<div id="overlay__modal"><a id="overlay__close-link" class="overlay__close" href="#">close</a><div id="overlay__content"></div></div>';
     
+    overlay.cssInit = function(){
+        overlay.cssLoaded = true;
+      }
+    
     overlay.init = function(settings){ 
       if(init) return;
       init = true;
-      logActive = (typeof settings.doLog != 'undefined') ? settings.doLog : false;
+      overlay.logging = (typeof settings.doLog != 'undefined') ? settings.doLog : false;
       
       jQuery('body').append(backdrop); 
       jQuery('body').append(modal);
       if(typeof settings.useCSS == 'undefined' || settings.useCSS) 
       {
         var css = (typeof settings.css != 'undefined') ? settings.css : MDLY.css;
-        var cssObj = jQuery('<link>', {rel:'stylesheet', type:'text/css', href:css});
+        var cssObj = jQuery('<link>', {rel:'stylesheet', type:'text/css', href:css, onLoad:overlay.cssInit()});
         cssObj.appendTo('head');  
-      }
-       
+      }else overlay.cssLoaded = true;
+      
       jQuery('body').on('click','.overlay__close',function(e){
           overlay.close('click');
           return false;
@@ -57,16 +61,21 @@ MDLY.overlay = (function(){
     // add triggers
     overlay.addTrigger = function(settings){
         overlay.log('adding: ' + settings.binding + ' trigger');
-        if(settings.open && !firstLoad) 
-        {
-          overlay.open(settings);
-          firstLoad = true;    
-        }
         jQuery('body').on('click','.'+settings.binding+'__trigger', function(){
           settings.trigger = jQuery(this);
           overlay.open(settings);
           return false;
         });
+        if(settings.openNow && !current)
+        {
+          var I = setInterval(function(){
+              if(overlay.cssLoaded)
+              {
+                clearInterval(I);
+                overlay.open(settings);    
+              }
+            },300);          
+        }
       };
     
     // Open the modal
@@ -87,7 +96,6 @@ MDLY.overlay = (function(){
       jQuery('#overlay__backdrop').show();
       jQuery('#overlay__modal').show();
       (typeof overlay.opts.hideClose == 'undefined' || !overlay.opts.hideClose) ? jQuery('.overlay__close').show() : jQuery('.overlay__close').hide();
-      jQuery(overlay.opts.target).show();
       overlay.center();
       
       if(typeof overlay.opts.openCallback == 'function') overlay.opts.openCallback(overlay.opts);
@@ -122,7 +130,7 @@ MDLY.overlay = (function(){
     
     //simple logger
     overlay.log = function(msg){
-      if(logActive  && typeof console == 'object') console.log(msg); 
+      if(overlay.logging  && typeof console == 'object') console.log(msg); 
     };
     
     return overlay;
