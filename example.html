@@ -12,11 +12,31 @@
     <script>
       jQuery(function(){
         // initialize 
-        MDLY.overlay.init(true);
+        var settings = {
+                         doLog: true
+                       /** turn off backdrop listener (ALL) **/
+                         //, backdropClose: false
+                       /** turn off esc listener (ALL) **/
+                         //, escClose: false
+                       /** use your own css (by turning off) **/
+                         //, useCSS: true
+                       /** use your own css, but have it autoinclude **/
+                         //, css: 'path/to/different.css'
+                       };
+        MDLY.overlay.init(settings);
         
-        var overlay = {binding:'modal-simple'};
-        overlay.openCallback = funcOpen;
-        overlay.closeCallback = funcClose; 
+        var overlay = {
+                        'binding':'modal-simple'
+                      /** turn off backdrop listener (per modal) **/
+                        //, backdropClose: false
+                      /** turn off esc listener  (per modal) **/
+                       //, escClose: false,
+                     /** turns of X close **/
+                       //, hideClose: true,
+                      };
+        /** open/close callbacks **/
+        // overlay.openCallback = funcOpen;
+        // overlay.closeCallback = funcClose; 
         MDLY.overlay.addTrigger(overlay);
       });
       

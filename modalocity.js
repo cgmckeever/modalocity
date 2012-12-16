@@ -1,4 +1,5 @@
 MDLY = {};
+MDLY.css = 'modalocity.css';
 MDLY.overlay = (function(){
     var overlay = {};
     var current = false;
@@ -9,33 +10,48 @@ MDLY.overlay = (function(){
     // elements
     var backdrop = '<div id="overlay__backdrop" class="overlay__backdrop"></div>';
     var modal = '<div id="overlay__modal"><a id="overlay__close-link" class="overlay__close" href="#">close</a><div id="overlay__content"></div></div>';
-    var css = jQuery('<link>', {rel: "stylesheet", type: "text/css", href: 'modalocity.css'});
     
-    overlay.init = function(doLog){ 
+    overlay.init = function(settings){ 
       if(init) return;
       init = true;
-      logActive = doLog;
+      logActive = (typeof settings.doLog != 'undefined') ? settings.doLog : false;
       
       jQuery('body').append(backdrop); 
       jQuery('body').append(modal);
-      css.appendTo('head');  
+      if(typeof settings.useCSS == 'undefined' || settings.useCSS) 
+      {
+        var css = (typeof settings.css != 'undefined') ? settings.css : MDLY.css;
+        var cssObj = jQuery('<link>', {rel:'stylesheet', type:'text/css', href:css});
+        cssObj.appendTo('head');  
+      }
        
       jQuery('body').on('click','.overlay__close',function(e){
           overlay.close('click');
           return false;
         });
-      jQuery('.overlay__backdrop').bind('click', function(e) {
-          var obj = jQuery(e.target);
-          if(obj.hasClass('overlay__backdrop')) 
-          { 
-            overlay.close('backdrop');
-            return false;
-          }
-        });    
-      jQuery('body').bind('keydown', function(e) {
-        if(!current) return;
-        if(e.which == 27) overlay.close('esc');
-      });  
+
+      var backdropClose = (typeof settings.backdropClose != 'undefined') ? settings.backdropClose : true;  
+      if(backdropClose)
+      {   
+        jQuery('.overlay__backdrop').bind('click', function(e) {overlay.log(overlay.opts);
+            var obj = jQuery(e.target);
+            if(obj.hasClass('overlay__backdrop') && (typeof overlay.opts.backdropClose == 'undefined' || overlay.opts.backdropClose) ) 
+            { 
+              overlay.close('backdrop');
+              return false;
+            }
+          });
+      }
+          
+      var escClose = (typeof settings.escClose != 'undefined') ? settings.escClose : true;  
+      if(escClose)
+      {
+        jQuery('body').bind('keydown', function(e) {
+          if(!current) return;
+          
+          if(e.which == 27 && (typeof overlay.opts.escClose == 'undefined' || overlay.opts.escClose) ) overlay.close('esc');
+        });  
+      }
     }
     
     // add triggers
@@ -70,6 +86,7 @@ MDLY.overlay = (function(){
 
       jQuery('#overlay__backdrop').show();
       jQuery('#overlay__modal').show();
+      (typeof overlay.opts.hideClose == 'undefined' || !overlay.opts.hideClose) ? jQuery('.overlay__close').show() : jQuery('.overlay__close').hide();
       jQuery(overlay.opts.target).show();
       overlay.center();
       
