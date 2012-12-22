@@ -27,9 +27,11 @@
                       /** turn off esc listener  (per modal) **/
                        //, escClose: false,
                      /** turns of X close **/
-                       //, hideClose: true,
+                       //, hideClose: true
                      /** triggers open  **/
-                       , openNow: true,   
+                       , openNow: true   
+                     /** fixes position **/
+                       , fixed: true
                       };
         /** open/close callbacks **/
         // overlay.openCallback = funcOpen;
@@ -42,9 +44,9 @@
                       /** turn off backdrop listener (per modal) **/
                         , backdropClose: false
                       /** turn off esc listener  (per modal) **/
-                       //, escClose: false,
+                       //, escClose: false
                      /** turns of X close **/
-                       //, hideClose: true,
+                       //, hideClose: true
                      /** triggers open  **/
                        , openNow: true,  
                       };
@@ -77,6 +79,8 @@
     
     <hr />
     <a href="#" class="modal-simple-b__trigger">Click Trigger Goodbye</a>
+    <div style="height:1000px">
+    </div>
     
     <div id="modal-simple-b__parent" style="display:none">
       <div id="modal-simple-b__content">

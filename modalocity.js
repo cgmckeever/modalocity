@@ -97,6 +97,7 @@ MDLY.overlay = (function(){
 
       jQuery('#overlay__backdrop').show();
       jQuery('#overlay__modal').show();
+      if(overlay.opts.fixed) jQuery('#overlay__modal').css('position','fixed');
       (typeof overlay.opts.hideClose == 'undefined' || !overlay.opts.hideClose) ? jQuery('.overlay__close').show() : jQuery('.overlay__close').hide();
       overlay.center();
       
@@ -109,7 +110,7 @@ MDLY.overlay = (function(){
     // Center the modal in the viewport
     overlay.center = function (){
       var t, l;
-      t = Math.max(jQuery(window).height() - jQuery('#overlay__modal').outerHeight(), 0) / 2;
+      t = Math.max(window.innerHeight - jQuery('#overlay__modal').outerHeight(), 0) / 2;
       l = Math.max(jQuery(window).width() - jQuery('#overlay__modal').outerWidth(), 0) / 2;
 
       jQuery('#overlay__modal').css({
@@ -123,6 +124,7 @@ MDLY.overlay = (function(){
       if(!current) return;
       overlay.log(eType+' dismiss: ' + current.opts.target);
       jQuery('#overlay__modal').hide();
+      jQuery('#overlay__modal').css('position','');
       jQuery('#overlay__backdrop').hide();
       jQuery('#'+overlay.opts.binding+'__parent').append(jQuery(current.opts.target));
       if(typeof current.opts.closeCallback == 'function') current.opts.closeCallback(current.opts);
